@@ -1,29 +1,31 @@
 using UnityEngine;
 
-public class BulletBase : ActorBase
+public class BulletBase : MonoBehaviour
 {
+    public MLabActorType actorType;
     public MLabActorType targetType;
 
-    public ActorBase owner;
-
-    private Vector3 direction;
+    private WeaponBase Weapon;
+    private GameObject target;
     private float speed;
     private float bulletDamage;
     private float lifetime = 5f; // Bullet will be destroyed after 5 seconds
 
-    public void Initialize(Vector3 dir, float spd, float dmg)
+    public void Initialize(GameObject target, float spd, float dmg, MLabActorType actorType, WeaponBase weapon)
     {
-        direction = dir;
+        this.target = target;
         speed = spd;
         bulletDamage = dmg;
-
+        this.actorType = actorType;
+        this.Weapon = weapon;
         targetType = GameMain.Instance.GetTargeType(actorType);
     }
 
     private void Update()
     {
         // Move the bullet
-        transform.position += direction * speed * GameMain.DeltaTime;
+        Vector3 direction = target.transform.position - transform.position;
+        transform.position += direction.normalized * speed * GameMain.DeltaTime;
 
         // Destroy bullet after lifetime
         lifetime -= GameMain.DeltaTime;
@@ -40,8 +42,10 @@ public class BulletBase : ActorBase
         if (actor != null && actor.actorType == targetType)
         {
             // Deal damage
+            //DamageCalculator.Instance.CalculateDamage(this, target.GetComponent<ActorBase>());
             actor.TakeDamage(bulletDamage);
-            actor.SetLastAttackedActor(owner);
+            actor.SetLastAttackedActor(GetComponentInParent<WeaponBase>()?.GetOwner());
+            Weapon.OnBulletHit(this);
             Destroy(gameObject);
         }
     }
