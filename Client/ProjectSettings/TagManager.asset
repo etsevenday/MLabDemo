@@ -8,6 +8,9 @@ TagManager:
   - ChessB
   - PlayerA
   - PlayerB
+  - soldier
+  - SpwanA
+  - SpwanB
   layers:
   - Default
   - TransparentFX

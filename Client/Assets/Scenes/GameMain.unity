@@ -960,6 +960,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6128778813336378319, guid: 2b66804addd0fe9449ede25673b3528e,
+        type: 3}
+      propertyPath: m_TagString
+      value: SpwanB
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -1044,6 +1049,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: buildingRed
+      objectReference: {fileID: 0}
+    - target: {fileID: 6128778813336378319, guid: 2b66804addd0fe9449ede25673b3528e,
+        type: 3}
+      propertyPath: m_TagString
+      value: SpwanA
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2568,7 +2578,8 @@ MonoBehaviour:
     type: 3}
   actorBlue: {fileID: 9057934865629276217, guid: 8e413e5ff3a484140a8ad8cca0b4d5a1,
     type: 3}
-  spawnAreaRadius: 3
+  spawnAreaWidth: 10
+  spawnAreaHeight: 10
   spawnAreaOffset: {x: 0, y: 0}
 --- !u!1 &1927480977
 GameObject:
