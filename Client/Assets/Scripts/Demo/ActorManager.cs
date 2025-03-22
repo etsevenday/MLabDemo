@@ -26,10 +26,12 @@ public class ActorManager : MonoBehaviour
     public GameObject actorBlue;
 
     [Header("Spawn Area Settings")]
-    [LabelText("生成区域宽度")]
-    [SerializeField] private float spawnAreaWidth = 10f;
-    [LabelText("生成区域高度")]
-    [SerializeField] private float spawnAreaHeight = 10f;
+    [LabelText("生成区域半径")]
+    [SerializeField] public float spawnAreaRadius = 3f;
+    //[LabelText("生成区域宽度")]
+    //[SerializeField] private float spawnAreaWidth = 10f;
+    //[LabelText("生成区域高度")]
+    //[SerializeField] private float spawnAreaHeight = 10f;
     [LabelText("生成区域中心偏移")]
     [SerializeField] private Vector2 spawnAreaOffset = Vector2.zero;
 
@@ -67,14 +69,28 @@ public class ActorManager : MonoBehaviour
         }
     }
 
+    private GameObject GetPrefab(MLabActorType actorType)
+    { 
+        return actorType == MLabActorType.PlayerA ? actorRed : actorBlue;
+    }
+
+    private Vector2 GetSpawnPosition(MLabActorType actorType)
+    {
+        return actorType == MLabActorType.PlayerA ? GameMain.Instance.redSpawn.transform.position : GameMain.Instance.blueSpawn.transform.position;
+    }
+
     public void SpawnActor(MLabActorType actorType)
     {
-        GameObject actor = actorType == MLabActorType.PlayerA ? actorRed : actorBlue;
+        GameObject actor = GetPrefab(actorType);
         
-        // Calculate random position within spawn area
-        float randomX = Random.Range(-spawnAreaWidth/2, spawnAreaWidth/2) + spawnAreaOffset.x + transform.position.x;
-        float randomY = Random.Range(-spawnAreaHeight/2, spawnAreaHeight/2) + spawnAreaOffset.y + transform.position.y;
-        Vector3 spawnPosition = new Vector3(randomX, randomY, transform.position.z);
+        var spwanPos = GetSpawnPosition(actorType);
+
+        var random = Random.insideUnitCircle;
+        spwanPos += random * spawnAreaRadius;
+
+        //float randomX = Random.Range(-spawnAreaWidth/2, spawnAreaWidth/2) + spawnAreaOffset.x + transform.position.x;
+        //float randomY = Random.Range(-spawnAreaHeight/2, spawnAreaHeight/2) + spawnAreaOffset.y + transform.position.y;
+        Vector3 spawnPosition = new Vector3(spwanPos.x, spwanPos.y, transform.position.z);
         
         Instantiate(actor, spawnPosition, Quaternion.identity);
     }
@@ -99,14 +115,11 @@ public class ActorManager : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
-        // Draw spawn area in editor
-        Gizmos.color = new Color(0, 1, 0, 0.3f);
-        Vector3 center = transform.position + new Vector3(spawnAreaOffset.x, spawnAreaOffset.y, 0);
-        Gizmos.DrawCube(center, new Vector3(spawnAreaWidth, spawnAreaHeight, 0.1f));
-        
-        // Draw outline
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(center, new Vector3(spawnAreaWidth, spawnAreaHeight, 0.1f));
+        Gizmos.color = new Color(1, 0, 0, 0.3f);
+        Gizmos.DrawSphere(GameMain.Instance.redSpawn.transform.position, spawnAreaRadius);
+
+        Gizmos.color = new Color(0, 0, 1, 0.3f);
+        Gizmos.DrawSphere(GameMain.Instance.redSpawn.transform.position, spawnAreaRadius);
     }
 #endif
 }

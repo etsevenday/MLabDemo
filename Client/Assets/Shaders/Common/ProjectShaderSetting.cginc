@@ -1,0 +1,10 @@
+#ifndef UEP_PROJECT_SHADER_SETTING_INCLUDED
+#define UEP_PROJECT_SHADER_SETTING_INCLUDED
+
+// 是否在Shader层将片元颜色从线性空间转到Gamma空间？
+#define LINE_TO_GAMMA
+
+#endif//UEP_PROJECT_SHADER_SETTING_INCLUDED
+
+
+             

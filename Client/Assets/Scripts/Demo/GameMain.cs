@@ -17,6 +17,8 @@ public class GameMain : MonoBehaviour
     [LabelText("蓝方Data")]
     public PlayerDataManager bluePlayerData;   
 
+    public int initActorCount = 5;  
+
     private bool isGameing = false;
     public static float GlobalTime = 0;
     public static float DeltaTime = 0;
@@ -78,6 +80,15 @@ public class GameMain : MonoBehaviour
             DeltaTime = Time.deltaTime;
         }
         CheckGameOver();
+    }
+
+    private void Start()
+    {
+        for (int i = 0; i < initActorCount; i++)
+        {
+            ActorManager.Instance.SpawnActor(MLabActorType.PlayerA);
+            ActorManager.Instance.SpawnActor(MLabActorType.PlayerB);
+        }
     }
 
     public void CheckGameOver()
